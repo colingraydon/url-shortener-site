@@ -18,17 +18,24 @@ mongoose
     .catch((error) => {
         console.log(error);
     });
+
+
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: false}))
-app.get('/',   (req, res) =>  { 
-    //const shortUrls = await shortUrl.find()
-    res.render('views');
-    //res.render('views', { shortUrls: shortUrls});
+app.get('/',  async (req, res) =>  { 
+    const shortUrls = await shortUrl.find()
+    res.render('views', { shortUrls: shortUrls});
 });
 
 app.post('/shortUrls', async (req, res) => {
     await shortUrl.create({full: req.body.fullURL})
-    res.redirect('/')
+    res.redirect('/') 
+})
+
+app.get('/:shortUrl', async (req, res) => {
+    const shortUrls = await shortUrl.findOne({short: req.params.shortUrl})
+    if (shortUrls == null) return res.sendStatus(404);
+    res.redirect(shortUrls.full)
 })
 
 app.listen(SERVER_PORT, () => console.log(`Running on ${SERVER_PORT}`));

@@ -24,10 +24,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><a href="https://github.com/colingraydon">https://github.com/colingraydon</a></td>
-                    <td><a href="jC82nQ">jC82nQ</a></td>
-                </tr>
+                <% shortUrls.forEach(shortUrl => { %>
+                    <tr>
+                        <td><a href="<%= shortUrl.full %>"><%=shortUrl.full %></a></td>
+                        <td><a href="<%= shortUrl.short %>"><%=shortUrl.short %></a></td>
+                    </tr>
+                    
+                <% }) %> 
             </tbody>
         </table>
     </div>

@@ -29,13 +29,19 @@ mongoose_1.default
 });
 app.set('view engine', 'ejs');
 app.use(express_1.default.urlencoded({ extended: false }));
-app.get('/', (req, res) => {
-    //const shortUrls = await shortUrl.find()
-    res.render('views');
-    //res.render('views', { shortUrls: shortUrls});
-});
+app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const shortUrls = yield shortUrl.find();
+    //res.render('views');
+    res.render('views', { shortUrls: shortUrls });
+}));
 app.post('/shortUrls', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield shortUrl.create({ full: req.body.fullURL });
     res.redirect('/');
+}));
+app.get('/:shortUrl', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const shortUrls = yield shortUrl.findOne({ short: req.params.shortUrl });
+    if (shortUrls == null)
+        return res.sendStatus(404);
+    res.redirect(shortUrls.full);
 }));
 app.listen(SERVER_PORT, () => console.log(`Running on ${SERVER_PORT}`));
